@@ -129,7 +129,7 @@ public abstract class Tower {
     CopyOnWriteArrayList<Enemy> enemyList = waveManager.getEnemyList();
 
     for (Enemy enemy : enemyList) {
-      if (Math.sqrt((enemy.getXCoordinate() - xCoordinate) * (enemy.getXCoordinate() - xCoordinate) +
+      if (!enemy.isDying() && Math.sqrt((enemy.getXCoordinate() - xCoordinate) * (enemy.getXCoordinate() - xCoordinate) +
         (enemy.getYCoordinate() - yCoordinate) * (enemy.getYCoordinate() - yCoordinate)) <= RANGE) {
         return enemy;
       }

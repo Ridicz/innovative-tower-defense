@@ -1,6 +1,5 @@
 package data;
 
-import helpers.Clock;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -36,6 +35,8 @@ public class Enemy {
 
   private Direction direction = Direction.Right;
 
+  Animation explosionAnimation;
+
   public Enemy(Tile startTile, Tile endTile, TileGrid tileGrid, float speed, Texture texture, int maxHealth, int reward) {
     this.startTile = startTile;
     this.endTile = endTile;
@@ -52,70 +53,87 @@ public class Enemy {
     this.health = maxHealth;
     this.healthBar = new HealthBar(xCoordinate, yCoordinate);
     this.reward = reward;
+
+    try {
+      this.explosionAnimation = new Animation(new SpriteSheet("res/explosion.png", 64, 64), 50);
+      this.explosionAnimation.setAutoUpdate(true);
+      explosionAnimation.stopAt(explosionAnimation.getFrameCount() - 1);
+    } catch (SlickException e) {
+      e.printStackTrace();
+    }
   }
 
   public void update() {
-    switch (direction) {
-      case Right:
-        xCoordinate += speed;
-        break;
-      case Up:
-        yCoordinate -= speed;
-        break;
-      case Down:
-        yCoordinate += speed;
-        break;
-      case Left:
-        xCoordinate -= speed;
-        break;
-    }
+    if (!dying) {
+      switch (direction) {
+        case Right:
+          xCoordinate += speed;
+          break;
+        case Up:
+          yCoordinate -= speed;
+          break;
+        case Down:
+          yCoordinate += speed;
+          break;
+        case Left:
+          xCoordinate -= speed;
+          break;
+      }
 
-    if (xCoordinate % TILE_SIZE == 0 && yCoordinate % TILE_SIZE == 0) {
-      if (xCoordinate == endTile.getXCoordinate() && yCoordinate == endTile.getYCoordinate()) {
-        Player.decreaseLives();
-        alive = false;
-      } else {
-        if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE) != startTile) {
-          if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1) != startTile) {
-            direction = Direction.Up;
-          } else if (tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE) != startTile) {
-            direction = Direction.Right;
-          } else if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1) != startTile) {
-            direction = Direction.Down;
-          } else {
-            direction = Direction.Left;
+      if (xCoordinate % TILE_SIZE == 0 && yCoordinate % TILE_SIZE == 0) {
+        if (xCoordinate == endTile.getXCoordinate() && yCoordinate == endTile.getYCoordinate()) {
+          Player.decreaseLives();
+          alive = false;
+        } else {
+          if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE) != startTile) {
+            if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1) != startTile) {
+              direction = Direction.Up;
+            } else if (tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE) != startTile) {
+              direction = Direction.Right;
+            } else if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1) != startTile) {
+              direction = Direction.Down;
+            } else {
+              direction = Direction.Left;
+            }
+
+            startTile = tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE);
           }
-
-          startTile = tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE);
         }
       }
-    }
 
-    healthBar.setXCoordinate(xCoordinate);
-    healthBar.setYCoordinate(yCoordinate);
-    healthBar.setHealthPercentage((int) ((health * 1.0) / maxHealth * 100));
+      healthBar.setXCoordinate(xCoordinate);
+      healthBar.setYCoordinate(yCoordinate);
+      healthBar.setHealthPercentage((int) ((health * 1.0) / maxHealth * 100));
+    }
   }
 
   public void draw() {
-    switch (direction) {
-      case Down:
-        drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 180, texture);
-        break;
+    if (dying) {
+      explosionAnimation.draw(xCoordinate, yCoordinate);
+      if (explosionAnimation.isStopped()) {
+        alive = false;
+      }
+    } else {
+      switch (direction) {
+        case Down:
+          drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 180, texture);
+          break;
 
-      case Left:
-        drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 270, texture);
-        break;
+        case Left:
+          drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 270, texture);
+          break;
 
-      case Right:
-        drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 90, texture);
-        break;
+        case Right:
+          drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 90, texture);
+          break;
 
-      case Up:
-        drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 0, texture);
-        break;
+        case Up:
+          drawQuadTexRotated2(xCoordinate, yCoordinate, width, height, 0, texture);
+          break;
+      }
+
+      healthBar.draw();
     }
-
-    healthBar.draw();
   }
 
   public void hitEnemy(int damage) {
@@ -123,8 +141,7 @@ public class Enemy {
 
     if (health <= 0) {
       Player.addMoney(reward);
-      //drawText(xCoordinate, yCoordinate, "$" + reward);
-      alive = false;
+      dying = true;
     }
   }
 
@@ -162,6 +179,10 @@ public class Enemy {
 
   public boolean isAlive() {
     return alive;
+  }
+
+  public boolean isDying() {
+    return dying;
   }
 
   public int getReward() {
