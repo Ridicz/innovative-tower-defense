@@ -28,7 +28,7 @@ public class LaserTower extends Tower {
 
   public LaserTower(int xCoordinate, int yCoordinate, WaveManager waveManager) {
     this(xCoordinate, yCoordinate, waveManager, quickLoadTexture("tower1"), quickLoadTexture("laser/start_red"),
-      quickLoadTexture("laser/middle_red"), quickLoadTexture("laser/end_red"), 1f, 10, 280, 200);
+      quickLoadTexture("laser/middle_red"), quickLoadTexture("laser/end_red"), 1f, 10, 260, 200);
   }
 
   @Override
