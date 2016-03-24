@@ -20,6 +20,7 @@ public abstract class Tower {
   private int yCoordinate;
 
   private float rotation;
+  private float rotationSpeed;
   private float timeSinceLastShot;
 
   private Texture textureCannon;
