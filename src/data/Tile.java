@@ -4,8 +4,8 @@ import org.newdawn.slick.opengl.Texture;
 
 import static helpers.Artist.*;
 
-public class Tile {
-  public static final int TILE_SIZE = 64;
+class Tile {
+  static final int TILE_SIZE = 64;
 
   private int xCoordinate;
   private int yCoordinate;
@@ -16,7 +16,7 @@ public class Tile {
 
   private Tower tower;
 
-  public Tile(int xCoordinate, int yCoordinate, TileType tileType) {
+  Tile(int xCoordinate, int yCoordinate, TileType tileType) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.tileType = tileType;
@@ -36,15 +36,15 @@ public class Tile {
     drawQuadTex(xCoordinate, yCoordinate, texture);
   }
 
-  public TileType getTileType() {
-    return tileType;
-  }
-
   public void setTower(Tower tower) {
     this.tower = tower;
   }
 
   public Tower getTower() {
     return tower;
+  }
+
+  TileType getTileType() {
+    return tileType;
   }
 }

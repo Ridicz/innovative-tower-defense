@@ -3,15 +3,15 @@ package data;
 import static data.Tile.TILE_SIZE;
 
 public class TileGrid {
-  private static final int WIDTH_TILES = 15;
+  private static final int WIDTH_TILES = 20;
   private static final int HEIGHT_TILES = 10;
 
   public final static int MAP_WIDTH = TILE_SIZE * WIDTH_TILES;
   public final static int MAP_HEIGHT = TILE_SIZE * HEIGHT_TILES;
 
-  public Tile[][] map;
+  private Tile[][] map;
 
-  public TileGrid(int[][] inputMap) {
+  TileGrid(int[][] inputMap) {
     map = new Tile[WIDTH_TILES][HEIGHT_TILES];
 
     for (int i = 0; i < map.length; i++) {
@@ -33,7 +33,7 @@ public class TileGrid {
     }
   }
 
-  public Tile getTile(int xCoordinate, int yCoordinate) {
+  Tile getTile(int xCoordinate, int yCoordinate) {
     return map[xCoordinate][yCoordinate];
   }
 

@@ -13,7 +13,7 @@ import static helpers.Artist.*;
 import static data.Tile.TILE_SIZE;
 import static data.UI.UI_HEIGHT;
 
-public class Player {
+class Player {
   private static int money;
   private static int lives;
 
@@ -37,7 +37,7 @@ public class Player {
 
   private Texture rangeTexture;
 
-  public Player(Tile startTile, Tile endTile, TileGrid tileGrid) {
+  Player(Tile startTile, Tile endTile, TileGrid tileGrid) {
     money = 1500;
     lives = 4;
     this.mouseClicked = false;
@@ -95,19 +95,19 @@ public class Player {
     }
   }
 
-  public static void addMoney(int money) {
+  static void addMoney(int money) {
     Player.money += money;
   }
 
-  public static void decreaseLives() {
+  static void decreaseLives() {
     --Player.lives;
   }
 
-  public static int getMoney() {
+  static int getMoney() {
     return money;
   }
 
-  public static int getLives() {
+  static int getLives() {
     return lives;
   }
 

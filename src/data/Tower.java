@@ -10,15 +10,13 @@ import static data.Tile.TILE_SIZE;
 public abstract class Tower {
   private static final int TOWER_SIZE = TILE_SIZE;
 
-  private final int DAMAGE;
-  private final int RANGE;
-  private final int PRICE;
-
-  private final float RELOAD_TIME;
-
   private int xCoordinate;
   private int yCoordinate;
+  private int damage;
+  private int range;
+  private int price;
 
+  private float reloadTime;
   private float rotation;
   private float rotationSpeed;
   private float timeSinceLastShot;
@@ -38,10 +36,10 @@ public abstract class Tower {
     this.textureCannon = textureCannon;
     this.waveManager = waveManager;
     this.tilePlaced = null;
-    this.RELOAD_TIME = reloadTime;
-    this.DAMAGE = damage;
-    this.RANGE = range;
-    this.PRICE = cost;
+    this.reloadTime = reloadTime;
+    this.damage = damage;
+    this.range = range;
+    this.price = cost;
     this.rotation = 0;
   }
 
@@ -57,9 +55,9 @@ public abstract class Tower {
     drawQuadTexRotated2(xCoordinate, yCoordinate, TOWER_SIZE, TOWER_SIZE, rotation, textureCannon);
   }
 
-  public boolean shotTaken() {
+  boolean shotTaken() {
     if (targetEnemy != null) {
-      if (timeSinceLastShot >= RELOAD_TIME) {
+      if (timeSinceLastShot >= reloadTime) {
         timeSinceLastShot = 0;
         return true;
       }
@@ -72,30 +70,6 @@ public abstract class Tower {
 
   public abstract Tower getNewTower(int xCoordinate, int yCoordinate, WaveManager waveManager);
 
-  public Tile getTilePlaced() {
-    return tilePlaced;
-  }
-
-  public void setTilePlaced(Tile tilePlaced) {
-    this.tilePlaced = tilePlaced;
-  }
-
-  public int getPrice() {
-    return PRICE;
-  }
-
-  public int getRange() {
-    return RANGE;
-  }
-
-  public void setXCoordinate(int xCoordinate) {
-    this.xCoordinate = xCoordinate;
-  }
-
-  public void setYCoordinate(int yCoordinate) {
-    this.yCoordinate = yCoordinate;
-  }
-
   public int getXCoordinate() {
     return xCoordinate;
   }
@@ -104,20 +78,48 @@ public abstract class Tower {
     return yCoordinate;
   }
 
-  public float getRotation() {
+  Tile getTilePlaced() {
+    return tilePlaced;
+  }
+
+  void setTilePlaced(Tile tilePlaced) {
+    this.tilePlaced = tilePlaced;
+  }
+
+  int getPrice() {
+    return price;
+  }
+
+  int getRange() {
+    return range;
+  }
+
+  void setXCoordinate(int xCoordinate) {
+    this.xCoordinate = xCoordinate;
+  }
+
+  void setYCoordinate(int yCoordinate) {
+    this.yCoordinate = yCoordinate;
+  }
+
+  float getRotation() {
     return rotation;
   }
 
-  public Enemy getTargetEnemy() {
+  Enemy getTargetEnemy() {
     return targetEnemy;
   }
 
-  public int getDamage() {
-    return DAMAGE;
+  int getDamage() {
+    return damage;
   }
 
-  public float getTimeSinceLastShot() {
+  float getTimeSinceLastShot() {
     return timeSinceLastShot;
+  }
+
+  float getReloadTime() {
+    return reloadTime;
   }
 
   private float designateAngle() {
@@ -131,7 +133,7 @@ public abstract class Tower {
 
     for (Enemy enemy : enemyList) {
       if (!enemy.isDying() && Math.sqrt((enemy.getXCoordinate() - xCoordinate) * (enemy.getXCoordinate() - xCoordinate) +
-        (enemy.getYCoordinate() - yCoordinate) * (enemy.getYCoordinate() - yCoordinate)) <= RANGE) {
+        (enemy.getYCoordinate() - yCoordinate) * (enemy.getYCoordinate() - yCoordinate)) <= range) {
         return enemy;
       }
     }

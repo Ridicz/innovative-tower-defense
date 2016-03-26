@@ -1,5 +1,5 @@
 package data;
 
-public enum Action {
+enum Action {
   SELL, UPGRADE, PLAY_PAUSE, TOWER, NEXT_WAVE
 }

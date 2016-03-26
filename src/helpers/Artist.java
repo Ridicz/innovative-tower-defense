@@ -14,14 +14,15 @@ import java.io.InputStream;
 
 import static org.lwjgl.opengl.GL11.*;
 import static data.TileGrid.MAP_HEIGHT;
+import static data.TileGrid.MAP_WIDTH;
 import static data.UI.UI_HEIGHT;
 
 public class Artist {
-  public static final int SCREEN_WIDTH = 960;
+  public static final int SCREEN_WIDTH = MAP_WIDTH > 960 ? MAP_WIDTH : 960; //960;
   public static final int SCREEN_HEIGHT = MAP_HEIGHT + UI_HEIGHT;
 
-  static Font awtFont;
-  static TrueTypeFont font;
+  private static Font awtFont;
+  private static TrueTypeFont font;
 
   public static void beginSession() {
     Display.setTitle("The Game");

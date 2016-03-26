@@ -28,7 +28,7 @@ public class UI {
 
   private boolean pause;
 
-  public UI(WaveManager waveManager) {
+  UI(WaveManager waveManager) {
     this.waveManager = waveManager;
     this.towerButtonList = new ArrayList<>();
     this.buttonList = new ArrayList<>();
@@ -44,10 +44,6 @@ public class UI {
   }
 
   public void draw() {
-    if (selectionMenu != null) {
-      selectionMenu.draw();
-    }
-
     drawQuadTex(0, MAP_HEIGHT, interfaceBackgroundTexture);
     towerButtonList.forEach(data.TowerButton::draw);
     buttonList.forEach(data.Button::draw);
@@ -57,9 +53,13 @@ public class UI {
     drawText(65, MAP_HEIGHT + 15, String.valueOf(Player.getMoney()));
     drawText(65, MAP_HEIGHT + 55, String.valueOf(Player.getLives()));
     drawText(65, MAP_HEIGHT + 95, String.valueOf(waveManager.getWaveNumber()));
+
+    if (selectionMenu != null) {
+      selectionMenu.draw();
+    }
   }
 
-  public Button getSelectedButton(int xCoordinate, int yCoordinate) {
+  Button getSelectedButton(int xCoordinate, int yCoordinate) {
     if (selectionMenu != null) {
       if (checkForSelection(selectionMenu.getSellButton(), xCoordinate, yCoordinate)) {
         return selectionMenu.getSellButton();
@@ -83,7 +83,7 @@ public class UI {
     return null;
   }
 
-  public void setSelectionMenu(Tower selectedTower) {
+  void setSelectionMenu(Tower selectedTower) {
     if (selectedTower != null) {
       selectionMenu = new SelectionMenu(selectedTower);
     } else {
@@ -91,7 +91,7 @@ public class UI {
     }
   }
 
-  public void swapPlayPause() {
+  void swapPlayPause() {
     if (pause) {
       playPauseButton.setTexture(pauseButtonTexture);
     } else {
