@@ -55,7 +55,7 @@ public class Enemy {
     this.reward = reward;
 
     try {
-      this.explosionAnimation = new Animation(new SpriteSheet("res/explosion.png", 64, 64), 50);
+      this.explosionAnimation = new Animation(new SpriteSheet("src/main/java/res/explosion.png", 64, 64), 50);
       this.explosionAnimation.setAutoUpdate(true);
       explosionAnimation.stopAt(explosionAnimation.getFrameCount() - 1);
     } catch (SlickException e) {

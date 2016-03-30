@@ -59,7 +59,7 @@ public class UI {
     }
   }
 
-  Button getSelectedButton(int xCoordinate, int yCoordinate) {
+  public Button getSelectedButton(int xCoordinate, int yCoordinate) {
     if (selectionMenu != null) {
       if (checkForSelection(selectionMenu.getSellButton(), xCoordinate, yCoordinate)) {
         return selectionMenu.getSellButton();
@@ -83,7 +83,7 @@ public class UI {
     return null;
   }
 
-  void setSelectionMenu(Tower selectedTower) {
+  public void setSelectionMenu(Tower selectedTower) {
     if (selectedTower != null) {
       selectionMenu = new SelectionMenu(selectedTower);
     } else {
@@ -91,7 +91,7 @@ public class UI {
     }
   }
 
-  void swapPlayPause() {
+  public void swapPlayPause() {
     if (pause) {
       playPauseButton.setTexture(pauseButtonTexture);
     } else {

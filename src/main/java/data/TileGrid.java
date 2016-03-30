@@ -11,7 +11,7 @@ public class TileGrid {
 
   private Tile[][] map;
 
-  TileGrid(int[][] inputMap) {
+  public TileGrid(int[][] inputMap) {
     map = new Tile[WIDTH_TILES][HEIGHT_TILES];
 
     for (int i = 0; i < map.length; i++) {
@@ -33,7 +33,7 @@ public class TileGrid {
     }
   }
 
-  Tile getTile(int xCoordinate, int yCoordinate) {
+  public Tile getTile(int xCoordinate, int yCoordinate) {
     return map[xCoordinate][yCoordinate];
   }
 

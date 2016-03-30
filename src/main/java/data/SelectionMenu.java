@@ -5,7 +5,7 @@ import org.newdawn.slick.opengl.Texture;
 import static helpers.Artist.*;
 import static data.TileGrid.*;
 
-class SelectionMenu {
+public class SelectionMenu {
   private int xCoordinate;
   private int yCoordinate;
 
@@ -16,7 +16,7 @@ class SelectionMenu {
 
   private Tower selectedTower;
 
-  SelectionMenu(Tower selectedTower) {
+  public SelectionMenu(Tower selectedTower) {
     this.selectedTower = selectedTower;
     this.selectionMenuTexture = quickLoadTexture("selection_menu");
 
@@ -46,11 +46,11 @@ class SelectionMenu {
     drawText(xCoordinate + 10, yCoordinate + 85, "DPS: " + (int) (selectedTower.getDamage() / selectedTower.getReloadTime()));
   }
 
-  Button getSellButton() {
+  public Button getSellButton() {
     return sellButton;
   }
 
-  Button getUpgradeButton() {
+  public Button getUpgradeButton() {
     return upgradeButton;
   }
 }

@@ -307,7 +307,7 @@ public class Artist {
   }
 
   public static Texture quickLoadTexture(String name) {
-    return loadTexture("res/" + name + ".png", "PNG");
+    return loadTexture("src/main/java/res/" + name + ".png", "PNG");
   }
 }
 

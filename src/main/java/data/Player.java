@@ -13,7 +13,7 @@ import static helpers.Artist.*;
 import static data.Tile.TILE_SIZE;
 import static data.UI.UI_HEIGHT;
 
-class Player {
+public class Player {
   private static int money;
   private static int lives;
 
@@ -37,7 +37,7 @@ class Player {
 
   private Texture rangeTexture;
 
-  Player(Tile startTile, Tile endTile, TileGrid tileGrid) {
+  public Player(Tile startTile, Tile endTile, TileGrid tileGrid) {
     money = 1500;
     lives = 4;
     this.mouseClicked = false;
@@ -52,8 +52,8 @@ class Player {
     this.rangeTexture = quickLoadTexture("range");
 
     try {
-      this.cursorRegular = CursorLoader.get().getCursor("res/normal_cursor.png", 8, 4);
-      this.cursorHovered = CursorLoader.get().getCursor("res/hovered_cursor.png", 8, 4);
+      this.cursorRegular = CursorLoader.get().getCursor("src/main/java/res/normal_cursor.png", 8, 4);
+      this.cursorHovered = CursorLoader.get().getCursor("src/main/java/res/hovered_cursor.png", 8, 4);
     } catch (IOException | LWJGLException e) {
       e.printStackTrace();
     }
@@ -95,19 +95,19 @@ class Player {
     }
   }
 
-  static void addMoney(int money) {
+  public static void addMoney(int money) {
     Player.money += money;
   }
 
-  static void decreaseLives() {
+  public static void decreaseLives() {
     --Player.lives;
   }
 
-  static int getMoney() {
+  public static int getMoney() {
     return money;
   }
 
-  static int getLives() {
+  public static int getLives() {
     return lives;
   }
 

@@ -4,7 +4,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import static helpers.Artist.*;
 
-class Tile {
+public class Tile {
   static final int TILE_SIZE = 64;
 
   private int xCoordinate;
@@ -16,7 +16,7 @@ class Tile {
 
   private Tower tower;
 
-  Tile(int xCoordinate, int yCoordinate, TileType tileType) {
+  public Tile(int xCoordinate, int yCoordinate, TileType tileType) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.tileType = tileType;

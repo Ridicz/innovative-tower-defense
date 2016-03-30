@@ -55,7 +55,7 @@ public abstract class Tower {
     drawQuadTexRotated2(xCoordinate, yCoordinate, TOWER_SIZE, TOWER_SIZE, rotation, textureCannon);
   }
 
-  boolean shotTaken() {
+  public boolean shotTaken() {
     if (targetEnemy != null) {
       if (timeSinceLastShot >= reloadTime) {
         timeSinceLastShot = 0;
@@ -78,47 +78,47 @@ public abstract class Tower {
     return yCoordinate;
   }
 
-  Tile getTilePlaced() {
+  public Tile getTilePlaced() {
     return tilePlaced;
   }
 
-  void setTilePlaced(Tile tilePlaced) {
+  public void setTilePlaced(Tile tilePlaced) {
     this.tilePlaced = tilePlaced;
   }
 
-  int getPrice() {
+  public int getPrice() {
     return price;
   }
 
-  int getRange() {
+  public int getRange() {
     return range;
   }
 
-  void setXCoordinate(int xCoordinate) {
+  public void setXCoordinate(int xCoordinate) {
     this.xCoordinate = xCoordinate;
   }
 
-  void setYCoordinate(int yCoordinate) {
+  public void setYCoordinate(int yCoordinate) {
     this.yCoordinate = yCoordinate;
   }
 
-  float getRotation() {
+  public float getRotation() {
     return rotation;
   }
 
-  Enemy getTargetEnemy() {
+  public Enemy getTargetEnemy() {
     return targetEnemy;
   }
 
-  int getDamage() {
+  public int getDamage() {
     return damage;
   }
 
-  float getTimeSinceLastShot() {
+  public float getTimeSinceLastShot() {
     return timeSinceLastShot;
   }
 
-  float getReloadTime() {
+  public float getReloadTime() {
     return reloadTime;
   }
 
