@@ -25,10 +25,10 @@ public class Clock {
     //totalTime += delta;
   }
 
-  public static float countDelta() {
+  private static float countDelta() {
     long currentTime = getTime();
     int delta = (int) (currentTime - lastFrame);
-    lastFrame = getTime();
+    lastFrame = currentTime;
 
     return delta * 0.001f;
   }
@@ -41,7 +41,7 @@ public class Clock {
     paused = !paused;
   }
 
-  public static long getTime() {
+  private static long getTime() {
     return Sys.getTime() * 1000 / Sys.getTimerResolution();
   }
 }
