@@ -28,7 +28,7 @@ public class UI {
 
   private boolean pause;
 
-  UI(WaveManager waveManager) {
+  public UI(WaveManager waveManager) {
     this.waveManager = waveManager;
     this.towerButtonList = new ArrayList<>();
     this.buttonList = new ArrayList<>();

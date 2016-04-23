@@ -10,22 +10,23 @@ import static data.Tile.TILE_SIZE;
 public abstract class Tower {
   private static final int TOWER_SIZE = TILE_SIZE;
 
-  private int xCoordinate;
-  private int yCoordinate;
-  private int damage;
-  private int range;
-  private int price;
+  protected int xCoordinate;
+  protected int yCoordinate;
+  protected int damage;
+  protected int range;
+  protected int price;
+  protected int upgradePrice;
 
-  private float reloadTime;
-  private float rotation;
-  private float rotationSpeed;
-  private float timeSinceLastShot;
+  protected float reloadTime;
+  protected float rotation;
+  protected float rotationSpeed;
+  protected float timeSinceLastShot;
 
   private Texture textureCannon;
 
   private Tile tilePlaced;
 
-  private Enemy targetEnemy;
+  protected Enemy targetEnemy;
 
   private WaveManager waveManager;
 
@@ -40,6 +41,7 @@ public abstract class Tower {
     this.damage = damage;
     this.range = range;
     this.price = cost;
+    this.upgradePrice = (int) (price * 0.2);
     this.rotation = 0;
   }
 
@@ -66,6 +68,14 @@ public abstract class Tower {
     timeSinceLastShot += getDelta();
 
     return false;
+  }
+
+  public abstract void upgrade();
+
+  public void upgrade(int rangeIncrease, int damageIncrease, int priceIncrease) {
+    this.range += rangeIncrease;
+    this.damage += damageIncrease;
+    this.price += priceIncrease;
   }
 
   public abstract Tower getNewTower(int xCoordinate, int yCoordinate, WaveManager waveManager);
@@ -102,14 +112,6 @@ public abstract class Tower {
     this.yCoordinate = yCoordinate;
   }
 
-  public float getRotation() {
-    return rotation;
-  }
-
-  public Enemy getTargetEnemy() {
-    return targetEnemy;
-  }
-
   public int getDamage() {
     return damage;
   }
@@ -120,6 +122,10 @@ public abstract class Tower {
 
   public float getReloadTime() {
     return reloadTime;
+  }
+
+  public int getUpgradePrice() {
+    return upgradePrice;
   }
 
   private float designateAngle() {

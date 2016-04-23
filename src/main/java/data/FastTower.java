@@ -11,4 +11,9 @@ public class FastTower extends ConventionalTower {
   public Tower getNewTower(int xCoordinate, int yCoordinate, WaveManager waveManager) {
     return new FastTower(xCoordinate, yCoordinate, waveManager);
   }
+
+  @Override
+  public void upgrade() {
+
+  }
 }

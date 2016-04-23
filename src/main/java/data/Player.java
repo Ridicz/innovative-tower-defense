@@ -164,7 +164,11 @@ public class Player {
         break;
 
       case UPGRADE:
-
+        if (money >= selectedTower.getUpgradePrice()) {
+          money -= selectedTower.getUpgradePrice();
+          selectedTower.upgrade();
+          selectedTower = null;
+        }
         break;
     }
   }

@@ -36,23 +36,23 @@ public class LaserTower extends Tower {
     super.update();
 
     if (shotTaken()) {
-      super.getTargetEnemy().hitEnemy(super.getDamage());
+      targetEnemy.hitEnemy(damage);
     }
 
-    alpha = 1 - (super.getTimeSinceLastShot() / LASER_DURATION) * (super.getTimeSinceLastShot() / LASER_DURATION) * 3;
+    alpha = 1 - (timeSinceLastShot / LASER_DURATION) * (timeSinceLastShot / LASER_DURATION) * 3;
   }
 
   public void draw() {
     super.draw();
 
-    if (super.getTimeSinceLastShot() < LASER_DURATION) {
-      double radians = Math.toRadians(super.getRotation());
+    if (timeSinceLastShot < LASER_DURATION) {
+      double radians = Math.toRadians(rotation);
       double sinAlfa = Math.sin(radians);
       double cosAlfa = Math.cos(radians);
 
-      if (super.getTargetEnemy() != null) {
-        height = (int) Math.sqrt((super.getTargetEnemy().getXCoordinate() - super.getXCoordinate()) * (super.getTargetEnemy().getXCoordinate() - super.getXCoordinate()) +
-          (super.getTargetEnemy().getYCoordinate() - super.getYCoordinate()) * (super.getTargetEnemy().getYCoordinate() - super.getYCoordinate()));
+      if (targetEnemy != null) {
+        height = (int) Math.sqrt((targetEnemy.getXCoordinate() - xCoordinate) * (targetEnemy.getXCoordinate() - xCoordinate) +
+          (targetEnemy.getYCoordinate() - yCoordinate) * (targetEnemy.getYCoordinate() - yCoordinate));
       }
 
 //      int xStart = (int) (8 * sinAlfa + super.getXCoordinate() + 32 + 32 * cosAlfa);
@@ -60,17 +60,20 @@ public class LaserTower extends Tower {
 //
 //      drawLaserBeam(xStart, yStart, 64, height - 32, super.getRotation() + 180, alpha, startTexture, middleTexture, endTexture);
 
-      int xStart = (int) (8 * sinAlfa + super.getXCoordinate() + WW + WW * cosAlfa);
-      int yStart = (int) (- 8 * cosAlfa + super.getYCoordinate() + WW + WW * sinAlfa);
+      int xStart = (int) (8 * sinAlfa + xCoordinate + WW + WW * cosAlfa);
+      int yStart = (int) (- 8 * cosAlfa + yCoordinate + WW + WW * sinAlfa);
 
-      drawLaserBeam(xStart, yStart, Tile.TILE_SIZE, height - WW, super.getRotation() + 180, alpha, startTexture, middleTexture, endTexture);
-
-
+      drawLaserBeam(xStart, yStart, Tile.TILE_SIZE, height - WW, rotation + 180, alpha, startTexture, middleTexture, endTexture);
     }
   }
 
   @Override
   public Tower getNewTower(int xCoordinate, int yCoordinate, WaveManager waveManager) {
     return new LaserTower(xCoordinate, yCoordinate, waveManager);
+  }
+
+  @Override
+  public void upgrade() {
+    super.upgrade(20, 5, 200);
   }
 }

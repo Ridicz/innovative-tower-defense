@@ -5,8 +5,21 @@ import org.lwjgl.opengl.Display;
 import static helpers.Artist.*;
 import static helpers.Clock.*;
 
-public class Boot {
-  private Boot() {
+public class Launcher {
+  int fps;
+  long lastFPS = getTime();
+
+  public void updateFPS() {
+    if (getTime() - lastFPS > 1000) {
+      Display.setTitle("FPS: " + fps);
+      fps = 0;
+      lastFPS += 1000;
+    }
+
+    fps++;
+  }
+
+  private Launcher() {
     beginSession();
 
     int[][] map = {
@@ -30,6 +43,7 @@ public class Boot {
     Player player = new Player(startTile, endTile, tileGrid);
 
     while (!Display.isCloseRequested()) {
+      updateFPS();
       update();
 
       player.update();
@@ -44,6 +58,6 @@ public class Boot {
   }
 
   public static void main(String[] args) {
-    new Boot();
+    new Launcher();
   }
 }

@@ -72,10 +72,16 @@ public class WaveManager {
   }
 
   private void generateWaves() {
-    Enemy enemy = new Enemy(startTile, endTile, tileGrid, 2, quickLoadTexture("tank"), 600, 50);
+    Enemy enemy = new Enemy(startTile, endTile, tileGrid, 2, quickLoadTexture("tank"), 500, 50);
     waveStack.push(new Wave(1.5f, enemy, 15));
 
-    enemy = new Enemy(startTile, endTile, tileGrid, 1, quickLoadTexture("tank"), 400, 30);
+    enemy = new Enemy(startTile, endTile, tileGrid, 1, quickLoadTexture("tank"), 400, 20);
+    waveStack.push(new Wave(2, enemy, 20));
+
+    enemy = new Enemy(startTile, endTile, tileGrid, 1, quickLoadTexture("tank"), 300, 20);
+    waveStack.push(new Wave(2, enemy, 20));
+
+    enemy = new Enemy(startTile, endTile, tileGrid, 1, quickLoadTexture("tank"), 200, 30);
     waveStack.push(new Wave(2, enemy, 20));
 
     enemy = new Enemy(startTile, endTile, tileGrid, 1, quickLoadTexture("tank"), 100, 20);

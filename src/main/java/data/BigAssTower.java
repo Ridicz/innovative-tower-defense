@@ -10,4 +10,9 @@ public class BigAssTower extends ConventionalTower {
   public Tower getNewTower(int xCoordinate, int yCoordinate, WaveManager waveManager) {
     return new BigAssTower(xCoordinate, yCoordinate, waveManager);
   }
+
+  @Override
+  public void upgrade() {
+
+  }
 }

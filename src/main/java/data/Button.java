@@ -8,8 +8,8 @@ public class Button {
   private int width;
   private int height;
 
-  private int xCoordinate;
-  private int yCoordinate;
+  protected int xCoordinate;
+  protected int yCoordinate;
 
   private Action action;
 

@@ -11,4 +11,9 @@ public class HeavyTower extends ConventionalTower {
   public Tower getNewTower(int xCoordinate, int yCoordinate, WaveManager waveManager) {
     return new HeavyTower(xCoordinate, yCoordinate, waveManager);
   }
+
+  @Override
+  public void upgrade() {
+
+  }
 }

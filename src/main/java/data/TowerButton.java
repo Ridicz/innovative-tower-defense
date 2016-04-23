@@ -14,6 +14,6 @@ public class TowerButton extends Button {
   }
 
   public Tower getTower() {
-    return tower.getNewTower(super.getXCoordinate(), super.getYCoordinate(), waveManager);
+    return tower.getNewTower(xCoordinate, yCoordinate, waveManager);
   }
 }

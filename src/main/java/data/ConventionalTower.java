@@ -19,7 +19,7 @@ abstract public class ConventionalTower extends Tower {
   public void update() {
     super.update();
 
-    if (super.shotTaken()) {
+    if (shotTaken()) {
       shoot();
     }
 
@@ -39,12 +39,12 @@ abstract public class ConventionalTower extends Tower {
   }
 
   private void shoot() {
-    double radians = Math.toRadians(super.getRotation());
+    double radians = Math.toRadians(rotation);
 
-    int xStart = (int) (32 * Math.sin(radians) + super.getXCoordinate() + 24);
-    int yStart =  (int) (- 32 * Math.cos(radians) + super.getYCoordinate() + 24);
+    int xStart = (int) (32 * Math.sin(radians) + xCoordinate + 24);
+    int yStart =  (int) (- 32 * Math.cos(radians) + yCoordinate + 24);
 
-    projectiles.add(new BulletProjectile(xStart, yStart, super.getDamage(), MUZZLE_VELOCITY, super.getTargetEnemy()));
+    projectiles.add(new BulletProjectile(xStart, yStart, damage, MUZZLE_VELOCITY, targetEnemy));
 
     //Lesson1.execute();
   }
