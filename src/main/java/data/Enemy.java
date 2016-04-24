@@ -139,7 +139,7 @@ public class Enemy {
   public void hitEnemy(int damage) {
     health -= damage;
 
-    if (health <= 0) {
+    if (health <= 0 && !dying) {
       Player.addMoney(reward);
       dying = true;
     }

@@ -116,10 +116,6 @@ public abstract class Tower {
     return damage;
   }
 
-  public float getTimeSinceLastShot() {
-    return timeSinceLastShot;
-  }
-
   public float getReloadTime() {
     return reloadTime;
   }
