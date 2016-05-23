@@ -1,11 +1,12 @@
 package data.enemies;
 
+import data.map.Tile;
 import org.newdawn.slick.opengl.Texture;
 
 import static data.helpers.Graphics.*;
 
 class HealthBar {
-  private static final int WIDTH = 64;
+  private static final int WIDTH = Tile.TILE_SIZE;
   private static final int HEIGHT = 8;
 
   private int xCoordinate;

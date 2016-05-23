@@ -11,7 +11,6 @@ import data.helpers.Graphics;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.*;
 import org.newdawn.slick.opengl.CursorLoader;
-import org.newdawn.slick.opengl.Texture;
 
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -42,8 +41,6 @@ public class Player {
 
   private CopyOnWriteArrayList<Tower> towerList;
 
-  private Texture rangeTexture;
-
   public Player(Tile startTile, Tile endTile, TileGrid tileGrid) {
     money = 1500;
     lives = 4;
@@ -56,12 +53,12 @@ public class Player {
     this.paused = true;
     this.selectedTower = null;
     this.buttonHovered = false;
-    this.rangeTexture = quickLoadTexture("range");
 
     try {
       this.cursorRegular = CursorLoader.get().getCursor("src/main/java/res/normal_cursor.png", 8, 4);
       this.cursorHovered = CursorLoader.get().getCursor("src/main/java/res/hovered_cursor.png", 8, 4);
     } catch (IOException | LWJGLException e) {
+      System.err.println("Cursors not found.");
       e.printStackTrace();
     }
   }
@@ -75,47 +72,6 @@ public class Player {
 
     towerList.forEach(Tower::update);
     waveManager.update();
-  }
-
-  public void draw() {
-    waveManager.draw();
-
-    if (placingMode) {
-      if (Mouse.getY() > UI_HEIGHT) {
-        drawRange();
-      }
-    } else if (selectedTower != null) {
-      drawRange(selectedTower.getXCoordinate(), selectedTower.getYCoordinate());
-    }
-
-    towerList.forEach(Tower::draw);
-    userInterface.draw();
-
-    try {
-      if (buttonHovered) {
-        Mouse.setNativeCursor(cursorHovered);
-      } else {
-        Mouse.setNativeCursor(cursorRegular);
-      }
-    } catch (LWJGLException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static void addMoney(int money) {
-    Player.money += money;
-  }
-
-  public static void decreaseLives() {
-    --Player.lives;
-  }
-
-  public static int getMoney() {
-    return money;
-  }
-
-  public static int getLives() {
-    return lives;
   }
 
   private void checkForMouseInput() {
@@ -144,6 +100,51 @@ public class Player {
     }
 
     mouseClicked = Mouse.isButtonDown(0);
+  }
+
+  public void draw() {
+    waveManager.draw();
+
+    int x = Mouse.getX();
+    int y = Graphics.SCREEN_HEIGHT - Mouse.getY();
+
+    if (placingMode) {
+      if (Mouse.getY() > UI_HEIGHT) {
+        selectedTower.drawRange(getTile(x, y), selectedTower.getRange());
+      }
+    } else if (selectedTower != null) {
+      selectedTower.drawRange(selectedTower.getXCoordinate(), selectedTower.getYCoordinate(), selectedTower.getRange());
+    }
+
+    towerList.forEach(Tower::draw);
+    userInterface.draw();
+
+    try {
+      if (buttonHovered) {
+        Mouse.setNativeCursor(cursorHovered);
+      } else {
+        Mouse.setNativeCursor(cursorRegular);
+      }
+    } catch (LWJGLException e) {
+      System.err.println("Cursor couldn't be set.");
+      e.printStackTrace();
+    }
+  }
+
+  public static void addMoney(int money) {
+    Player.money += money;
+  }
+
+  public static void decreaseLives() {
+    --Player.lives;
+  }
+
+  public static int getMoney() {
+    return money;
+  }
+
+  public static int getLives() {
+    return lives;
   }
 
   private void handleAction(Button buttonClicked) {
@@ -213,20 +214,5 @@ public class Player {
 
   private Tile getTile(int xCoordinate, int yCoordinate) {
     return tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE);
-  }
-
-  private void drawRange() {
-    int x = Mouse.getX();
-    int y = Graphics.SCREEN_HEIGHT - Mouse.getY();
-
-    Tile tileHovered = getTile(x, y);
-
-    drawRange(tileHovered.getXCoordinate(), tileHovered.getYCoordinate());
-  }
-
-  private void drawRange(int xCoordinate, int yCoordinate) {
-    int range = selectedTower.getRange();
-
-    drawQuadTex(xCoordinate - range + 32, yCoordinate - range + 32, range * 2, range * 2, rangeTexture);
   }
 }

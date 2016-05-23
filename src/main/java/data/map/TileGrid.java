@@ -12,6 +12,10 @@ public class TileGrid {
   public TileGrid(int[][] inputMap) {
     map = new Tile[WIDTH_TILES][HEIGHT_TILES];
 
+    initializeMap(inputMap);
+  }
+
+  private void initializeMap(int[][] inputMap) {
     for (int i = 0; i < map.length; i++) {
       for (int j = 0; j < map[i].length; j++) {
         switch (inputMap[j][i]) {

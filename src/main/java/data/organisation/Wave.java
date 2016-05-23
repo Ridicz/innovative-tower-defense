@@ -33,7 +33,7 @@ public class Wave {
   public void update() {
     timeSinceLastSpawn += getDelta();
 
-    if (timeSinceLastSpawn > spawnTime && numberOfSpawnedEnemies < numberOfEnemiesToSpawn) {
+    if (readyForSpawnNextEnemyFromCurrentWave()) {
       spawn();
       ++numberOfSpawnedEnemies;
       timeSinceLastSpawn = 0;
@@ -43,9 +43,15 @@ public class Wave {
 
     enemyList.stream().filter(enemy -> !enemy.isAlive()).forEach(enemyList::remove);
 
-    if (numberOfSpawnedEnemies >= numberOfEnemiesToSpawn && enemyList.isEmpty()) {
-      waveCompleted = true;
-    }
+    waveCompleted = checkIfWaveCompleted();
+  }
+
+  private boolean readyForSpawnNextEnemyFromCurrentWave() {
+    return (timeSinceLastSpawn > spawnTime && numberOfSpawnedEnemies < numberOfEnemiesToSpawn);
+  }
+
+  private boolean checkIfWaveCompleted() {
+    return (numberOfSpawnedEnemies >= numberOfEnemiesToSpawn && enemyList.isEmpty());
   }
 
   public void draw() {

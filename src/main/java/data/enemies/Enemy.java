@@ -8,11 +8,15 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.opengl.Texture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static data.helpers.Graphics.*;
 import static data.map.Tile.TILE_SIZE;
 
 public class Enemy {
+  private final Logger logger = LoggerFactory.getLogger(Enemy.class);
+
   private static final int ENEMY_SIZE = TILE_SIZE;
 
   private boolean alive;
@@ -58,12 +62,21 @@ public class Enemy {
     this.healthBar = new HealthBar(xCoordinate, yCoordinate);
     this.reward = reward;
 
+    setExplosionAnimation();
+  }
+
+  private void setExplosionAnimation() {
     try {
       this.explosionAnimation = new Animation(new SpriteSheet("src/main/java/res/explosion.png", 64, 64), 50);
       this.explosionAnimation.setAutoUpdate(true);
       explosionAnimation.stopAt(explosionAnimation.getFrameCount() - 1);
+    } catch (RuntimeException e) {
+      logger.error("Resources not found");
     } catch (SlickException e) {
+      logger.error("Caught SlickException");
       e.printStackTrace();
+    } finally {
+      logger.info("Enemy resources loaded successfully");
     }
   }
 
@@ -84,39 +97,41 @@ public class Enemy {
           break;
       }
 
-      if (xCoordinate % TILE_SIZE == 0 && yCoordinate % TILE_SIZE == 0) {
-        if (xCoordinate == endTile.getXCoordinate() && yCoordinate == endTile.getYCoordinate()) {
+      if (enemyEnteredNewTile()) {
+        if (enemyEscapedMap()) {
           Player.decreaseLives();
           alive = false;
         } else {
-          if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE) != startTile) {
-            if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1) != startTile) {
-              direction = Direction.Up;
-            } else if (tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE) != startTile) {
-              direction = Direction.Right;
-            } else if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1).getTileType() == TileType.Dirt && tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1) != startTile) {
-              direction = Direction.Down;
-            } else {
-              direction = Direction.Left;
-            }
-
-            startTile = tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE);
-          }
+          designateDirection();
         }
       }
 
-      healthBar.setXCoordinate(xCoordinate);
-      healthBar.setYCoordinate(yCoordinate);
-      healthBar.setHealthPercentage((int) ((health * 1.0) / maxHealth * 100));
+      updateHealthBar();
     }
+  }
+
+  private boolean enemyEnteredNewTile() {
+    return (xCoordinate % TILE_SIZE == 0 && yCoordinate % TILE_SIZE == 0);
+  }
+
+  private boolean enemyEscapedMap() {
+    return (xCoordinate == endTile.getXCoordinate() && yCoordinate == endTile.getYCoordinate());
+  }
+
+  private void updateHealthBar() {
+    healthBar.setXCoordinate(xCoordinate);
+    healthBar.setYCoordinate(yCoordinate);
+
+    designateHealthBarFill();
+  }
+
+  private void designateHealthBarFill() {
+    healthBar.setHealthPercentage((int) ((health * 1.0) / maxHealth * 100));
   }
 
   public void draw() {
     if (dying) {
-      explosionAnimation.draw(xCoordinate, yCoordinate);
-      if (explosionAnimation.isStopped()) {
-        alive = false;
-      }
+      animateExplosion();
     } else {
       switch (direction) {
         case Down:
@@ -140,12 +155,20 @@ public class Enemy {
     }
   }
 
+  private void animateExplosion() {
+    explosionAnimation.draw(xCoordinate, yCoordinate);
+    if (explosionAnimation.isStopped()) {
+      alive = false;
+    }
+  }
+
   public void hitEnemy(int damage) {
     health -= damage;
 
     if (health <= 0 && !dying) {
       Player.addMoney(reward);
       dying = true;
+      logger.info("Enemy killed");
     }
   }
 
@@ -191,5 +214,24 @@ public class Enemy {
 
   public int getReward() {
     return reward;
+  }
+
+  private void designateDirection() { //TODO simplify for f. sake!
+    if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE) != startTile) {
+      if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1).getTileType() == TileType.Dirt &&
+        tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE - 1) != startTile) {
+        direction = Direction.Up;
+      } else if (tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE).getTileType() == TileType.Dirt &&
+        tileGrid.getTile(xCoordinate / TILE_SIZE + 1, yCoordinate / TILE_SIZE) != startTile) {
+        direction = Direction.Right;
+      } else if (tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1).getTileType() == TileType.Dirt &&
+        tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE + 1) != startTile) {
+        direction = Direction.Down;
+      } else {
+        direction = Direction.Left;
+      }
+
+      startTile = tileGrid.getTile(xCoordinate / TILE_SIZE, yCoordinate / TILE_SIZE);
+    }
   }
 }

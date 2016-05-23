@@ -48,19 +48,24 @@ public class UI {
   }
 
   public void draw() {
-    drawQuadTex(0, MAP_HEIGHT, interfaceBackgroundTexture);
+    drawMenu();
+
     towerButtonList.forEach(TowerButton::draw);
     buttonList.forEach(Button::draw);
+
+    if (selectionMenu != null) {
+      selectionMenu.draw();
+    }
+  }
+
+  private void drawMenu() {
+    drawQuadTex(0, MAP_HEIGHT, interfaceBackgroundTexture);
     drawQuadTex(10, MAP_HEIGHT + 10, interfaceMoneyTexture);
     drawQuadTex(10, MAP_HEIGHT + 50, interfaceLivesTexture);
     drawQuadTex(10, MAP_HEIGHT + 90, interfaceWaveTexture);
     drawText(65, MAP_HEIGHT + 15, String.valueOf(Player.getMoney()));
     drawText(65, MAP_HEIGHT + 55, String.valueOf(Player.getLives()));
     drawText(65, MAP_HEIGHT + 95, String.valueOf(waveManager.getWaveNumber()));
-
-    if (selectionMenu != null) {
-      selectionMenu.draw();
-    }
   }
 
   public Button getSelectedButton(int xCoordinate, int yCoordinate) {

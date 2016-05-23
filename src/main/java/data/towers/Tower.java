@@ -1,8 +1,10 @@
 package data.towers;
 
+import data.helpers.Graphics;
 import data.map.Tile;
 import data.organisation.WaveManager;
 import data.enemies.Enemy;
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,6 +35,8 @@ public abstract class Tower {
 
   private WaveManager waveManager;
 
+  private Texture rangeTexture;
+
   public Tower(int xCoordinate, int yCoordinate, Texture textureCannon, WaveManager waveManager, float reloadTime, int damage, int range, int cost) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
@@ -46,6 +50,7 @@ public abstract class Tower {
     this.price = cost;
     this.upgradePrice = (int) (price * 0.2);
     this.rotation = 0;
+    this.rangeTexture = quickLoadTexture("range");
   }
 
   public void update() {
@@ -138,5 +143,16 @@ public abstract class Tower {
     }
 
     return null;
+  }
+
+  public void drawRange(Tile towersLocationTile, int range) {
+    drawRange(towersLocationTile.getXCoordinate(), towersLocationTile.getYCoordinate(), range);
+  }
+
+  public void drawRange(int xCoordinate, int yCoordinate, int range) {
+    float scaledRange = (float) ((range * 2) * (TILE_SIZE / 64.0));
+    float scaledCoordinates = (scaledRange - TILE_SIZE) / 2;
+
+    drawQuadTex(xCoordinate - scaledCoordinates, yCoordinate - scaledCoordinates, scaledRange, scaledRange, rangeTexture);
   }
 }

@@ -45,7 +45,5 @@ abstract public class ConventionalTower extends Tower {
     int yStart =  (int) (- 32 * Math.cos(radians) + yCoordinate + 24);
 
     projectiles.add(new BulletProjectile(xStart, yStart, damage, MUZZLE_VELOCITY, targetEnemy));
-
-    //Lesson1.execute();
   }
 }

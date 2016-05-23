@@ -8,8 +8,8 @@ import static data.helpers.Graphics.*;
 import static data.helpers.Clock.*;
 
 public class Launcher {
-  int fps;
-  long lastFPS = getTime();
+  private int fps;
+  private long lastFPS = getTime();
 
   public void updateFPS() {
     if (getTime() - lastFPS > 1000) {
@@ -47,8 +47,8 @@ public class Launcher {
     while (!Display.isCloseRequested()) {
       updateFPS();
       update();
-
       player.update();
+
       tileGrid.draw();
       player.draw();
 
